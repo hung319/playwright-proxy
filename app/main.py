@@ -10,6 +10,10 @@ def bypass_cf(url: str):
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         page.goto(url, timeout=60000)
+        
+        # 🕐 Chờ cho tới khi không còn network request nữa (challenge xong)
+        page.wait_for_load_state("networkidle", timeout=60000)
+
         content = page.content()
         browser.close()
         return content
